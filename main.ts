@@ -2,11 +2,12 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { MergeTask, NoteMergerSettings } from './models';
 
-import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting, TextComponent } from 'obsidian';
+import { App, ButtonComponent, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting, TextComponent } from 'obsidian';
 
 const DEFAULT_SETTINGS: NoteMergerSettings = {
 	tasks: [], // Default to an empty array of tasks
-	pluginVersion: '' // Will be set in onload
+	pluginVersion: '', // Will be set in onload
+	verbose_logging: undefined // Optional, for debugging purposes
 }
 
 /**
@@ -140,8 +141,39 @@ class SampleSettingTab extends PluginSettingTab {
 		// Not sure why this is needed, but it's included in the example
 		containerEl.empty();
 
+		new Setting(containerEl).setName('Merge tasks').setHeading();
+
+		// Flexbox-based list for merge tasks
+		const tasksContainer = containerEl.createDiv({ cls: 'merge-tasks-flex-list' });
+		const tasks = this.plugin.settings.tasks || [];
+		if (tasks.length === 0) {
+			tasksContainer.createDiv({ text: 'No merge tasks found.', cls: 'merge-task-empty' });
+		} else {
+			tasks.forEach((task: MergeTask, idx: number) => {
+				const taskDiv = tasksContainer.createDiv({ cls: 'merge-task-item' });
+				taskDiv.createEl('span', { text: `#${idx + 1}` });
+				taskDiv.createEl('span', { text: task.name || 'Unnamed Task', cls: 'merge-task-name' });
+				taskDiv.createEl('span', { text: task.lastRunResult || '', cls: 'merge-task-status' });
+				// Add more fields as needed
+			});
+		}
+
+		// Bottom row: right-aligned flexbox for Add button
+		const bottomRow = containerEl.createDiv({ cls: 'merge-tasks-bottom-row' });
+		const addTaskButton = new ButtonComponent(bottomRow)
+			.setButtonText('Add Task')
+			.setCta()
+			.onClick(() => {
+				// Logic to add a new merge task
+				new Notice('Add Task button clicked!');
+			});
+		bottomRow.appendChild(addTaskButton.buttonEl);
+
+		new Setting(containerEl).setName('Advanced options').setHeading();
+
+
 		// Plugin Settings Setting, allows for quick access to plugin Version and other Information
-		const pluginInfoElement = document.createElement('div')
+		const pluginInfoElement = this.containerEl.createDiv();
 		pluginInfoElement.className = 'plugin-info-flexbox';
 		const pluginInfo = [
 			{ label: 'Plugin Name', value: this.plugin.manifest.name ? this.plugin.manifest.name : 'Unnamed Plugin' },
@@ -151,7 +183,7 @@ class SampleSettingTab extends PluginSettingTab {
 		];
 
 		for (const opt of pluginInfo) {
-			const infoItem = document.createElement('div');
+			const infoItem = this.containerEl.createDiv();
 			infoItem.className = 'plugin-info-item';
 			infoItem.innerHTML = `${opt.label}`;
 
@@ -165,7 +197,7 @@ class SampleSettingTab extends PluginSettingTab {
 		}
 
 		new Setting(containerEl)
-			.setName('Plugin Information')
+			.setName('Plugin information').setHeading()
 			.infoEl.appendChild(pluginInfoElement);
 	}
 }

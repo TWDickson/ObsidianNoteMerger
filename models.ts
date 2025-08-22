@@ -1,6 +1,7 @@
 export interface NoteMergerSettings {
 	pluginVersion: string; // Version of the plugin
 	tasks: MergeTask[]; // Array of merge tasks
+	verbose_logging?: Date; //Optional, for debugging purposes
 }
 
 export interface MergeTask {

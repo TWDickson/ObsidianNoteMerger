@@ -1,3 +1,39 @@
+/* Bottom row for merge tasks: right-aligned flexbox */
+.merge-tasks-bottom-row {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	margin-top: 0.5em;
+	margin-bottom: 1.5em;
+}
+/* Flexbox styles for merge tasks list in settings */
+.merge-tasks-flex-list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+	margin-bottom: 1.5em;
+}
+.merge-task-item {
+	display: flex;
+	align-items: center;
+	gap: 1em;
+	padding: 0.5em 1em;
+	background: var(--background-secondary-alt);
+	border-radius: 6px;
+}
+.merge-task-name {
+	font-weight: 500;
+	flex: 1;
+}
+.merge-task-status {
+	font-size: 0.95em;
+	color: var(--text-muted);
+}
+.merge-task-empty {
+	color: var(--text-faint);
+	font-style: italic;
+	padding: 0.5em 0;
+}
 /*
 
 This CSS file will be included with your plugin, and
