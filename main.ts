@@ -1,10 +1,10 @@
 // Models
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { MergeTask, PluginSettings } from './models';
+import { MergeTask, NoteMergerSettings } from './models';
 
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting, TextComponent } from 'obsidian';
 
-const DEFAULT_SETTINGS: PluginSettings = {
+const DEFAULT_SETTINGS: NoteMergerSettings = {
 	tasks: [], // Default to an empty array of tasks
 	pluginVersion: '' // Will be set in onload
 }
@@ -14,7 +14,7 @@ const DEFAULT_SETTINGS: PluginSettings = {
  * Call this in onload after loading settings.
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-async function handleVersionAndMigrations(plugin: MyPlugin) {
+async function handleVersionAndMigrations(plugin: NoteMerger) {
 	const currentVersion = plugin.manifest?.version ?? '';
 	const savedVersion = plugin.settings.pluginVersion ?? '';
 
@@ -27,8 +27,8 @@ async function handleVersionAndMigrations(plugin: MyPlugin) {
 		await plugin.saveSettings();
 	}
 }
-export default class MyPlugin extends Plugin {
-	settings: PluginSettings;
+export default class NoteMerger extends Plugin {
+	settings: NoteMergerSettings;
 
 	async onload() {
 		await this.loadSettings();
@@ -127,9 +127,9 @@ class SampleModal extends Modal {
 }
 
 class SampleSettingTab extends PluginSettingTab {
-	plugin: MyPlugin;
+	plugin: NoteMerger;
 
-	constructor(app: App, plugin: MyPlugin) {
+	constructor(app: App, plugin: NoteMerger) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}

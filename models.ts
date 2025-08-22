@@ -1,4 +1,4 @@
-export interface PluginSettings {
+export interface NoteMergerSettings {
 	pluginVersion: string; // Version of the plugin
 	tasks: MergeTask[]; // Array of merge tasks
 }
