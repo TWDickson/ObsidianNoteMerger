@@ -6,3 +6,30 @@ available in the app when your plugin is enabled.
 If your plugin does not need CSS, delete this file.
 
 */
+
+.plugin-info-flexbox {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+	gap: 0.75em 1.5em;
+	align-items: center;
+	max-width: 100%;
+}
+.plugin-info-item {
+	font-weight: bold;
+	min-width: 120px;
+	margin-bottom: 0.2em;
+}
+.plugin-info-value {
+	min-width: 0;
+	word-break: break-word;
+	margin-bottom: 0.2em;
+}
+@media (max-width: 600px) {
+	.plugin-info-flexbox {
+		grid-template-columns: 1fr;
+		gap: 0.5em;
+	}
+	.plugin-info-item, .plugin-info-value {
+		margin-bottom: 0.2em;
+	}
+}

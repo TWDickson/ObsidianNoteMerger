@@ -137,17 +137,35 @@ class SampleSettingTab extends PluginSettingTab {
 	display(): void {
 		const {containerEl} = this;
 
+		// Not sure why this is needed, but it's included in the example
 		containerEl.empty();
 
+		// Plugin Settings Setting, allows for quick access to plugin Version and other Information
+		const pluginInfoElement = document.createElement('div')
+		pluginInfoElement.className = 'plugin-info-flexbox';
+		const pluginInfo = [
+			{ label: 'Plugin Name', value: this.plugin.manifest.name ? this.plugin.manifest.name : 'Unnamed Plugin' },
+			{ label: 'Description', value: this.plugin.manifest.description ? this.plugin.manifest.description : 'No description provided.' },
+			{ label: 'Version', value: this.plugin.manifest.version ? this.plugin.manifest.version : 'No version provided.' },
+			{ label: 'Author', value: this.plugin.manifest.author  ? this.plugin.manifest.author : 'No author provided.' }
+		];
+
+		for (const opt of pluginInfo) {
+			const infoItem = document.createElement('div');
+			infoItem.className = 'plugin-info-item';
+			infoItem.innerHTML = `${opt.label}`;
+
+			const infoValue = new TextComponent(pluginInfoElement)
+			.setValue(opt.value)
+			.setDisabled(true)
+			infoValue.inputEl.className = 'plugin-info-value';
+
+			pluginInfoElement.appendChild(infoItem)
+			pluginInfoElement.appendChild(infoValue.inputEl);
+		}
+
 		new Setting(containerEl)
-			.setName('Setting #1')
-			.setDesc('It\'s a secret')
-			.addText(text => text
-				.setPlaceholder('Enter your secret')
-				.setValue(this.plugin.settings.mySetting)
-				.onChange(async (value) => {
-					this.plugin.settings.mySetting = value;
-					await this.plugin.saveSettings();
-				}));
+			.setName('Plugin Information')
+			.infoEl.appendChild(pluginInfoElement);
 	}
 }
