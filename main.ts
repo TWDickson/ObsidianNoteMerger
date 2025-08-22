@@ -1,20 +1,39 @@
-import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
+// Models
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { MergeTask, PluginSettings } from './models';
 
-// Remember to rename these classes and interfaces!
+import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting, TextComponent } from 'obsidian';
 
-interface MyPluginSettings {
-	mySetting: string;
+const DEFAULT_SETTINGS: PluginSettings = {
+	tasks: [], // Default to an empty array of tasks
+	pluginVersion: '' // Will be set in onload
 }
 
-const DEFAULT_SETTINGS: MyPluginSettings = {
-	mySetting: 'default'
-}
+/**
+ * Handles plugin versioning and migration logic.
+ * Call this in onload after loading settings.
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+async function handleVersionAndMigrations(plugin: MyPlugin) {
+	const currentVersion = plugin.manifest?.version ?? '';
+	const savedVersion = plugin.settings.pluginVersion ?? '';
 
+	if (savedVersion !== currentVersion) {
+		// Place migration logic here
+		// Example: if (savedVersion < '1.2.0') { ... }
+
+		// After migrations, update the saved version
+		plugin.settings.pluginVersion = currentVersion;
+		await plugin.saveSettings();
+	}
+}
 export default class MyPlugin extends Plugin {
-	settings: MyPluginSettings;
+	settings: PluginSettings;
 
 	async onload() {
 		await this.loadSettings();
+		// Set the plugin version from manifest
+		this.settings.pluginVersion = this.manifest?.version ?? '';
 
 		// This creates an icon in the left ribbon.
 		const ribbonIconEl = this.addRibbonIcon('dice', 'Sample Plugin', (evt: MouseEvent) => {
