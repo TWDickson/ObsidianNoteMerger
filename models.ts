@@ -1,3 +1,8 @@
+export interface PluginSettings {
+	pluginVersion: string; // Version of the plugin
+	tasks: MergeTask[]; // Array of merge tasks
+}
+
 export interface MergeTask {
 	id: string;
 	name: string;
